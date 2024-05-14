@@ -41,7 +41,7 @@ def printForJson():
     result = appNoGenerator() + ", " + ', '.join(stringUUid)
     return result
 
-
+# переделать функции на возврат одного значения 
 def uuidsCountPrinter(secondArg):
     stringUUid = []
     for _ in range(secondArg):
@@ -62,9 +62,8 @@ def appNoPrinter(secondArg):
 
 def copyCoreId(secondArg):
     result = '\n'.join([generate_random_string() for _ in range(secondArg)])
-    resultForOut = ', '.join([generate_random_string() for _ in range(secondArg)])
     pyperclip.copy(result)
-    return resultForOut
+    return result.replace('\n', ', ')
 
 
 def generate_random_string():
@@ -172,31 +171,31 @@ def epgu(secondArg):
 
         return f"messageId = {messageId}, clientId = {clientId}, OrderId = {orderId_text} , Series = {series_text} , Number = {number_text}"
 
-
-if len(Args) > 1:
-    if Args[1] == "-json":
-        write_log(printForJson())
-    elif Args[1] == "-case":
-        if len(Args) > 2:
-            write_log(copyCoreId(int(Args[2])))
+if __name__ == '__main__':
+    if len(Args) > 1:
+        if Args[1] == "-json":
+            write_log(printForJson())
+        elif Args[1] == "-case":
+            if len(Args) > 2:
+                write_log(copyCoreId(int(Args[2])))
+            else:
+                print("Недостаточно аргументов для -case.")
+        elif Args[1] == "-app":
+            if len(Args) > 2:
+                write_log(appNoPrinter(int(Args[2])))
+            else:
+                print("Недостаточно аргументов для -app.")
+        elif Args[1] == "-epgu":
+            if len(Args) > 2:
+                write_log(epgu(str(Args[2])))
+            else:
+                print("Недостаточно аргументов для -epgu.")
+        elif Args[1] == "-uuid":
+            if len(Args) > 2:
+                write_log(uuidsCountPrinter(int(Args[2])))
+            else:
+                print("Недостаточно аргументов для -uuid.")
         else:
-            print("Недостаточно аргументов для -case.")
-    elif Args[1] == "-app":
-        if len(Args) > 2:
-            write_log(appNoPrinter(int(Args[2])))
-        else:
-            print("Недостаточно аргументов для -app.")
-    elif Args[1] == "-epgu":
-        if len(Args) > 2:
-            write_log(epgu(str(Args[2])))
-        else:
-            print("Недостаточно аргументов для -epgu.")
-    elif Args[1] == "-uuid":
-        if len(Args) > 2:
-            write_log(uuidsCountPrinter(int(Args[2])))
-        else:
-            print("Недостаточно аргументов для -uuid.")
+            print(message)
     else:
         print(message)
-else:
-    print(message)
