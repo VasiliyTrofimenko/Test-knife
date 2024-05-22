@@ -2,17 +2,19 @@ import codecs
 import json
 import uuid
 from appNumberGenerator import appNoGenerator
-from randomStringGenerator import randomStringGen
 from serialNumberGenerator import serialNoGenerator
 from numberGenerator import numberGenerator
 import xml.etree.ElementTree as ET
+import configparser
 
-# сделать передачу аргумета пути, возможно засунуть в switch
+
 class EPGU:
     @staticmethod
     def epgu(secondArg):
-        jsonFPAPath = 'C:\\Users\\vtrofimenko\\Desktop\\tnife\\Tnife-main\\fpaProsses\\FPA.json'
-        jsonASRPATH = 'C:\\Users\\vtrofimenko\\Desktop\\Test-knife\\arfProsses\\ARF.json'
+        config = configparser.ConfigParser()
+        config.read('config.ini')
+        FPAconfig = config.get('Path','FPA')
+        ARFconfig = config.get('Path','ASR')
         stringUUid = [str(uuid.uuid4()) for _ in range(2)]
         messageId = stringUUid[0]
         clientId = stringUUid[1]
@@ -22,12 +24,12 @@ class EPGU:
 
         if secondArg == 'arf':
             try:
-                with open(jsonASRPATH, 'r', encoding='utf-8') as f:
+                with open(ARFconfig, 'r', encoding='utf-8') as f:
                     data = json.load(f)
             except FileNotFoundError:
-                return f"File '{jsonASRPATH}' not found."
+                return f"File '{ARFconfig}' not found."
             except json.JSONDecodeError:
-                return f"Error decoding JSON in file '{jsonASRPATH}'."
+                return f"Error decoding JSON in file '{ARFconfig}'."
 
             data['smevMetadata']['messageId'] = messageId
             data['message']['requestMetadata']['clientId'] = clientId
@@ -45,19 +47,19 @@ class EPGU:
 
             data['message']['requestContent']['content']['messagePrimaryContent'] = xml_string
 
-            with codecs.open(jsonASRPATH, 'w', encoding='utf-8') as f:
+            with codecs.open(ARFconfig, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=4, ensure_ascii=False)
             return f"messageId = {messageId}, clientId = {clientId}, OrderId = {orderId_text}"
 
         elif secondArg == 'fpa':
             orderId_text = None
             try:
-                with codecs.open(jsonFPAPath, 'r', encoding='utf-8') as f:
+                with codecs.open(FPAconfig, 'r', encoding='utf-8') as f:
                     data = json.load(f)
             except FileNotFoundError:
-                return f"File '{jsonFPAPath}' not found."
+                return f"File '{FPAconfig}' not found."
             except json.JSONDecodeError:
-                return f"Error decoding JSON in file '{jsonFPAPath}'."
+                return f"Error decoding JSON in file '{FPAconfig}'."
 
             data['smevMetadata']['messageId'] = messageId
             data['message']['requestMetadata']['clientId'] = clientId
@@ -89,7 +91,7 @@ class EPGU:
 
             data['message']['requestContent']['content']['messagePrimaryContent'] = xml_string
 
-            with codecs.open(jsonFPAPath, 'w', encoding='utf-8') as f:
+            with codecs.open(FPAconfig, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=4, ensure_ascii=False)
 
             return f"messageId = {messageId}, clientId = {clientId}, OrderId = {orderId_text} , Series = {series_text} , Number = {number_text}"
