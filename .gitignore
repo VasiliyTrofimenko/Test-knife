@@ -1,3 +1,5 @@
 fpaProsses/
 arfProsses/
 logs.txt
+__pycache__/
+config.ini
