@@ -6,6 +6,7 @@ from uuidGenerator import uuidGenerator
 from epgu import EPGU
 from logWriter import logWriter
 from resourses.message import Message
+from kafkaSender import kafkaSenderClass
 
 Args = sys.argv
 
@@ -24,7 +25,8 @@ if __name__ == '__main__':
             else:
                 print("Недостаточно аргументов для -app.")
         elif Args[1] == "-epgu":
-            if len(Args) > 2:
+            
+            if len(Args) > 3:
                 logWriter.write_log(EPGU.epgu(str(Args[2])))
             else:
                 print("Недостаточно аргументов для -epgu.")
