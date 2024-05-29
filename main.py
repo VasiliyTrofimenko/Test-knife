@@ -10,7 +10,7 @@ from kafkaSender import kafkaSenderClass
 
 Args = sys.argv
 
-if __name__ == '__main__':
+def main():
     if len(Args) > 1:
         if Args[1] == "-json":
             logWriter.write_log(printForJson.printForJson())
@@ -25,9 +25,13 @@ if __name__ == '__main__':
             else:
                 print("Недостаточно аргументов для -app.")
         elif Args[1] == "-epgu":
-            
-            if len(Args) > 3:
+            if len(Args) > 2:
                 logWriter.write_log(EPGU.epgu(str(Args[2])))
+            else:
+                print("Недостаточно аргументов для -epgu.")
+            if Args[2] == "-kafka" and  len(Args) > 3:
+                logWriter.write_log(EPGU.epgu(str(Args[3])))
+                logWriter.write_log(kafkaSenderClass.kafkaSender(Args[3]))
             else:
                 print("Недостаточно аргументов для -epgu.")
         elif Args[1] == "-uuid":
@@ -39,3 +43,7 @@ if __name__ == '__main__':
             print(Message.defautMessage())
     else:
         print(Message.defautMessage())
+
+
+if __name__ == '__main__':
+    main()

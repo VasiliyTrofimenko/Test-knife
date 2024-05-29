@@ -7,6 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 
+
 class kafkaSenderClass:
     @staticmethod
     def kafkaSender(second_arg):
@@ -30,10 +31,10 @@ class kafkaSenderClass:
             case 'arf':
                 configPath = config.get('Path', 'ASR')
                 try:
-                        with codecs.open(configPath, 'r', encoding='utf-8') as f:
-                            message = json.load(f)
-                            producer.send('arfEPGURequestQueue', message)
-                            producer.flush()
+                    with codecs.open(configPath, 'r', encoding='utf-8') as f:
+                        message = json.load(f)
+                        producer.send('arfEPGURequestQueue', message)
+                        producer.flush()
                 except FileNotFoundError:
                         return f"File '{configPath}' not found."
                 except json.JSONDecodeError:
