@@ -1,5 +1,9 @@
-fpaProsses/
-arfProsses/
+
 logs.txt
-__pycache__/
+**/__pycache__/
+resourses/__pycache__
 config.ini
+.idea
+.vscode/* 
+/venv/
+**/.history
